@@ -6,9 +6,9 @@ exports.seed = function(knex, Promise) {
     .then(function () {
       // Inserts seed entries
       return knex('cohorts').insert([
-        {name: 'Full Stack Web1'},
-        {name: 'Full Stack Web2'},
-        {name: 'Full Stack Web3'}
+        {name: 'FSWEB 1'},
+        {name: 'FSWEB 2'},
+        {name: 'FSWEB 3'}
       ]);
     });
 };

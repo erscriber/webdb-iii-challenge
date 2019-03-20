@@ -5,6 +5,7 @@ exports.up = function(knex, Promise) {
   	stdnts.string('name', 128)
   		.notNullable();
 
+  	// cohort_id
   	stdnts.integer('cohort_id')
   		.unsigned()
   		.references('id')
@@ -15,7 +16,5 @@ exports.up = function(knex, Promise) {
 };
 
 exports.down = function(knex, Promise) {
-  return knex.schema.dropTableIfExists('stdnts');
+  return knex.schema.dropTableIfExists('students');
 };
-
-

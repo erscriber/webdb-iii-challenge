@@ -1,5 +1,6 @@
 
 exports.up = function(knex, Promise) {
+  // define the cohort table
   return knex.schema.createTable('cohorts', chrts => {
   	chrts.increments();
   	chrts.string('name', 128)
@@ -9,5 +10,6 @@ exports.up = function(knex, Promise) {
 };
 
 exports.down = function(knex, Promise) {
-  return knex.schema.dropTableIfExisits('chrts');
+  // remove the cohort table
+  return knex.schema.dropTableIfExists('cohorts');
 };
