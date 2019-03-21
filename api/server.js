@@ -130,8 +130,117 @@ server.delete('/api/cohorts/:id', async (req, res) => {
     }
   } 
   catch (error) {
-  	
+
   }
 });
+
+
+//Stretch Problem
+
+
+// GET
+server.get('/api/students', async (req, res) => {
+  try {
+    const students = await db('students'); 
+    res
+    	.status(200)
+    	.json(students);
+  }
+  catch (err) {
+  	res
+    	.status(500)
+    	.json(err);
+  }
+});
+
+// GET BY ID
+server.get('/api/students/:id', async (req, res) => {
+  //const studentWithCohort = "SELECT students.name AS student, cohorts.name AS name FROM students JOIN cohorts ON students.cohort_id = cohorts.id";
+  try {
+   const cohort = await db("cohorts")
+   		.join("students", "cohorts.id", "=", "students.cohort_id")
+   		.select("cohorts.name", "students.name")
+   		.where({ cohort_id: req.params.id });
+   res
+   		.status(200)
+   		.json(cohort);
+ } 
+ catch (err) {
+   res
+   		.status(500)
+   		.json(err);
+ }
+});
+
+//POST
+server.post('/api/students', async (req, res) => {
+  try {
+    const [id] = await db('students').insert(req.body);
+
+    const newStudent = await db('students')
+    	.where({ id })
+    	.first();
+
+    res
+    	.status(201)
+    	.json(newStudent);
+  }
+  catch(err) {
+		res
+		.status(500)
+		.json(err);
+  };
+});
+
+// PUT
+server.put('/api/students/:id', async (req, res) => {
+  try {
+    const count = await db('students')
+      .where({ id: req.params.id })
+      .update(req.body);
+
+    if (count > 0) {
+      const updatedStudent = await db('students')
+        .where({ id: req.params.id })
+        .first();
+
+      res
+      	.status(200)
+      	.json(updatedStudent);
+    } 
+    else {
+      res
+      	.status(404)
+      	.json({ message: 'Records not found' });
+    }
+  } 
+  catch (error) {
+
+  }
+});
+
+// DELETE
+server.delete('/api/students/:id', async (req, res) => {
+  try {
+    const count = await db('students')
+    	.where({ id: req.params.id })
+    	.del();
+
+    if (count > 0) {
+      res
+      	.status(204)
+      	.end();
+    } 
+    else {
+      res
+      	.status(404)
+      	.json({ message: 'Records not found' });
+    }
+  } 
+  catch (error) {
+
+  }
+});
+
 
 module.exports = server;
